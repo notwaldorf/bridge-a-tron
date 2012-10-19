@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>bridge-a-tron</title>
+	<link href='http://fonts.googleapis.com/css?family=PT+Sans:400' rel='stylesheet' type='text/css'>
+  	<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300' rel='stylesheet' type='text/css'>
+	
+  	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" title="default">
+	<link rel="stylesheet" type="text/css" href="css/style.css" title="default"> 
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  	<script type="text/javascript" src="lib/coffee-script.js"></script>
+  	
+  	<script type="text/coffeescript" src="bid.coffee"></script>
+  	
+</head>
+
+<body>
+	<div class="wrapper">
+		<h1> Playing bridge with Julia </h1>
+
+		<h2> Step 1. Here are your cards:</h2>
+		<p id="myCards"></p>
+
+		<h2> Step 2. What are you bidding?</h2>
+
+		<h2> Step 3. Julia responds with:</h2>
+
+		<h2> Step 3.1. What do you think it means?</h2>
+
+		<h2> Step 4. You respond with:</h2>
+		
+		
+	</div>
+
+</body>
+
+<script type="text/coffeescript">
+  @julia = new Robot
+
+  # set up clicks
+  @julia.gimmeCards()
+  $(myCards).text(@julia.whatsMyHand())
+</script>
+
+</html>
