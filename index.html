@@ -21,7 +21,13 @@
 		<h1> Playing bridge with Julia </h1>
 
 		<h2> Step 1. Here are your cards:</h2>
-		<p id="myCards"></p>
+		<p>
+			<span><span class="black">♣</span> <span id="clubs"   ></span></span> &nbsp;&nbsp;
+			<span><span class="red"  >♦</span> <span id="diamonds"></span></span> &nbsp;&nbsp;
+			<span><span class="red"  >♥</span> <span id="hearts"  ></span></span> &nbsp;&nbsp;
+			<span><span class="black">♠</span> <span id="spades"  ></span></span> &nbsp;&nbsp;
+			
+		</p>
 
 		<h2> Step 1.1. How many points do you have?</h2>
 
@@ -43,7 +49,15 @@
 
   # set up clicks
   @julia.gimmeCards()
-  $(myCards).text(@julia.whatsMyHand())
+
+  
+  myHand = @julia.whatsMyHand()
+  console.log(myHand)
+  $('#clubs').text(myHand.clubs)
+  $('#diamonds').text(myHand.diamonds)
+  $('#hearts').text(myHand.hearts)
+  $('#spades').text(myHand.spades)
+  
 </script>
 
 </html>
