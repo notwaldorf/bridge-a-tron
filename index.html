@@ -44,18 +44,23 @@
 		
 		<h2> Step 2. What are you bidding?</h2>
 		<p>
-			<span><input type="text" class="input-tiny" id=""><span class="black">♣</span></span> &nbsp;&nbsp;
-			<span><input type="text" class="input-tiny" id=""><span class="red"  >♦</span></span> &nbsp;&nbsp;
-			<span><input type="text" class="input-tiny" id=""><span class="red"  >♥</span></span> &nbsp;&nbsp;
-			<span><input type="text" class="input-tiny" id=""><span class="black">♠</span></span> &nbsp;&nbsp;
-			<span><input type="text" class="input-tiny" id=""><span class="black">NT</span></span> &nbsp;&nbsp;
-				<button type="button" class="btn btn-link" id="pass">Pass</button>
-				<button type="button" class="btn btn-link" id="bid">Bid!</button>
+			<span>
+				<input type="text" class="input-tiny" id="openHowMuch">
+				<select id="openOfWhat">
+				  <option value="C">♣</option>
+				  <option value="D">♦</option>
+				  <option value="H">♥</option>
+				  <option value="S">♠</option>
+				  <option value="NT">NT</option>
+				</select>
+			</span> 
+				<button type="button" class="btn btn-link" id="openPass">Pass</button>
+				<button type="button" class="btn btn-link" id="openBid">Bid!</button>
 			<p>
-			<span id="bidAnswer"></span>
-			<button type="button" class="btn btn-link hidden" id="bidWhy">Why?</button>
+			<span id="openBidAnswer"></span>
+			<button type="button" class="btn btn-link hidden" id="openBidWhy">Why?</button>
 			</p>
-			<span id="bidDetails"></span>
+			<span id="openBidDetails"></span>
 		</p>
 		<h2> Step 3. Julia responds with:</h2>
 

@@ -105,10 +105,16 @@ input[type="text"]
 	height: 14px;
 	font-size: 12px;
 }
+select 
+{
+	height: 25px;
+	width: 50px;
+}
 .input-tiny
 {
 	width: 20px;
 }
+
 .form-inline
 {
 	margin: 0;

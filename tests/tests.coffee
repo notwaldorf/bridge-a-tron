@@ -5,7 +5,12 @@ julia = new Thingamadoer()
 hands = julia.hands
 deck = julia.deck
 
-sortMagic = ((a,b) => parseInt(a) - parseInt(b))
+sortBasic = ((a,b) => parseInt(a) - parseInt(b))
+sortMagic = ((a,b) => 
+	# ace needs to win
+	if a == 0 then 1 
+	else if b == 0 then -1
+	else parseInt(a) - parseInt(b))
 
 test "deck is very likely created ok", ->
 	sampleDeck = new Deck()
@@ -24,13 +29,13 @@ test "my sort function actually works", ->
 	deepEqual [1,2,3,4,5,6], [1,2,3,4,5,6].sort(sortMagic)
 	deepEqual [], [].sort(sortMagic)
 	deepEqual [1], [1].sort(sortMagic)
-	deepEqual [1,11,12], [1,12,11].sort(sortMagic)
+	deepEqual [1,11,12, 0], [0, 1,12,11].sort(sortMagic)
 
 test "shuffling doesn't lose cards", ->
 	sampleDeck = new Deck()
 	shuffledDeck = sampleDeck.shuffle()
 	equal shuffledDeck.length, sampleDeck.unshuffled.length
-	deepEqual [0..51], shuffledDeck.sort(sortMagic)
+	deepEqual [0..51], shuffledDeck.sort(sortBasic)
 
 test "everyone has enough cards", ->
 	for side in deck.sides
@@ -47,7 +52,7 @@ test "everyone's cards makes the whole deck", ->
 
 	for suit in deck.suitNames
 		equal 13, allTheCards[suit].length
-		deepEqual [0..12], allTheCards[suit].sort(sortMagic)
+		deepEqual [0..12], allTheCards[suit].sort(sortBasic)
 
 test "we can score hands", ->
 	# even though they are illegal hands

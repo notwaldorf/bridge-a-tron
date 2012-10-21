@@ -34,15 +34,24 @@ class Thingamadoer
 			@scoreMyHand()
 		$("#pointsWhy").click =>
 			$("#pointsDetails").text(@messages.scoring)
-		$("#pass").click =>
-			answerBox = $('#bidAnswer') 
-			$('#bidWhy').show()
+		$("#openPass").click =>
+			answerBox = $('#openBidAnswer') 
+			$('#openBidWhy').show()
 			if (@whatShouldIOpenWith().text == "pass")
 				answerBox.text(@messages.yay)
 			else
 				answerBox.text(@messages.nay)	
-		$("#bidWhy").click =>
-			$("#bidDetails").text(@messages.openingBid)	
+		$("#openBid").click =>
+			answerBox = $('#openBidAnswer') 
+			$('#openBidWhy').show()
+			youSaid = $('#openHowMuch').val() + $("#openOfWhat").val()
+			console.log "you said: " + youSaid
+			if (@whatShouldIOpenWith().text == youSaid)
+				answerBox.text(@messages.yay)
+			else
+				answerBox.text(@messages.nay)	
+		$("#openBidWhy").click =>
+			$("#openBidDetails").text(@messages.openingBid)	
 
 	newGame: ->
 		@hands = @deck.gimmeHands()
@@ -183,7 +192,11 @@ class Deck
 		# sort the values within each suit
 		for i in @suits
 			values = sortedHand[@suitNames[i]]
-			sortedHand[@suitNames[i]] = values.sort( (a,b) => parseInt(a) - parseInt(b) )
+			sortedHand[@suitNames[i]] = values.sort( (a,b) => 
+					# ace needs to win
+					if a == 0 then 1 
+					else if b == 0 then -1
+					else parseInt(a) - parseInt(b))
 
 		sortedHand
 
