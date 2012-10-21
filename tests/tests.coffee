@@ -1,7 +1,6 @@
 module "card dealing stuff"
 
-julia = new Robot()
-julia.gimmeCards()
+julia = new Thingamadoer()
 # because typing is the worst
 hands = julia.hands
 deck = julia.deck
@@ -68,7 +67,7 @@ test "we can score hands", ->
 	equal julia.scoreIt(hand5), 0
 	equal julia.scoreIt(hand6), 16
 	equal julia.scoreIt(hand7), 10
-	equal julia.scoreIt(hand7), 10
+	equal julia.scoreIt(hand8), 17
 
 test "there's only 40 points in the deck", ->
 	allThePoints = 0;

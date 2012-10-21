@@ -1,15 +1,16 @@
-class Robot
+class Thingamadoer
 	constructor: ->
 		@deck = new Deck()
-		@hands = []
-
-	gimmeCards: ->
-		# shuffle deck with Fisher-Yates
-		# http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+		@messages = new Messages()
 		@hands = @deck.gimmeHands()
-		console.log("-----  NEW DEAL: -----")
-		console.log(@hands)
-		console.log("----------------------")
+
+		@setUpClicks()
+		console.log "my hand is worth: " + @scoreIt(@hands.north)
+	setUpClicks: ->
+		$("#pointsScore").click =>
+			@scoreMyHand()
+		$("#pointsWhy").click =>
+			$("#pointsDetails").text(@messages.scoring)
 
 	scoreIt: (hand) ->
 		# Ace = 4 pts.     King = 3 pts.     Queen = 2 pts.     Jack = 1 pt
@@ -17,21 +18,25 @@ class Robot
 		for suit in @deck.suitNames
 			for card in hand[suit]
 				points += @deck.points[card]
-
 		points
 
-	# wrappers for the north side
-	whatsMyHand: ->
-		prettifiedHand = {clubs:"", diamonds:"", hearts:"", spades:""}
+	showMeMyHand: ->
 		for suit in @deck.suitNames
+			prettifiedHand = ""
 			for card in @hands.north[suit]
-				prettifiedHand[suit] += @deck.valueNames[card] + " "
-
-		prettifiedHand
+				prettifiedHand += @deck.valueNames[card] + " "
+			$("##{suit}").text(prettifiedHand)    
 
 	scoreMyHand: () ->
-		@scoreIt(@hands.north)
-	
+		whatItShouldBe = @scoreIt(@hands.north)
+		answerBox = $('#pointsAnswer') 
+
+		if (parseInt($('#points').val()) != whatItShouldBe)
+			answerBox.text(@messages.nay)
+		else
+			answerBox.text(@messages.yay)
+
+		$('#pointsWhy').show();
 
 class Deck
 	constructor: ->
@@ -49,6 +54,8 @@ class Deck
 			for value in @values
 				@unshuffled.push {value: value, suit: suit}
 
+	# shuffle deck with Fisher-Yates
+	# http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 	shuffle: ->
 		shuffledDeck = [0..51]
 		i = shuffledDeck.length
@@ -87,9 +94,14 @@ class Deck
 
 		sortedHand
 
-	
+class Messages
+	constructor: ->
+		@yay = "Bingo, bango!"
+		@nay = "That's not right. Try again!"
+		@scoring = "Aces are worth 4 points. Kings are 3 points, Queens 2 points and Jacks are 1 point. Everything else is useless."
 
-window.Robot = Robot
+window.Thingamadoer = Thingamadoer
 window.Deck = Deck
+
 
 

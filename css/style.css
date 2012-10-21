@@ -90,12 +90,32 @@ p
 	text-shadow: white 0px 1px 0px;
 }
 
-.red {
+.red 
+{
 	color: red;
 }
 
-.black {
+.black 
+{
 	color: black;
+}
+
+input[type="text"]
+{
+	height: 14px;
+	font-size: 12px;
+}
+.input-tiny
+{
+	width: 20px;
+}
+.form-inline
+{
+	margin: 0;
+	padding: 0;
+}
+.hidden {
+	display:none;
 }
 /* =================================================================
  * floats

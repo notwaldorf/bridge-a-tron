@@ -30,6 +30,19 @@
 		</p>
 
 		<h2> Step 1.1. How many points do you have?</h2>
+		<form class="form-inline">
+		  	<span>I have </span><input type="text" class="input-tiny" id="points">
+		  	<span>points.</span>
+		  	<button type="button" class="btn btn-link" id="pointsScore">Check it!</button>
+		</form>
+		<p>
+			<span id="pointsAnswer"></span>
+			<button type="button" class="btn btn-link hidden" id="pointsWhy">Why?</button>
+			<span id="pointsDetails"></span>
+			
+		</p>
+		
+
 
 		<h2> Step 2. What are you bidding?</h2>
 
@@ -45,17 +58,8 @@
 </body>
 
 <script type="text/coffeescript">
-  @julia = new Robot
-
-  # set up clicks
-  @julia.gimmeCards()
-
-  
-  myHand = @julia.whatsMyHand()
-  
-  for suit in @julia.deck.suitNames
-  	$("##{suit}").text(myHand[suit]) # the extra hash is the coffee string interpolation
-  
+  julia = new Thingamadoer
+  julia.showMeMyHand()
 
 </script>
 
