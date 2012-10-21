@@ -11,15 +11,28 @@ class Robot
 		console.log(@hands)
 		console.log("----------------------")
 
+	scoreIt: (hand) ->
+		# Ace = 4 pts.     King = 3 pts.     Queen = 2 pts.     Jack = 1 pt
+		points = 0;
+		for suit in @deck.suitNames
+			for card in hand[suit]
+				points += @deck.points[card]
+
+		points
+
+	# wrappers for the north side
 	whatsMyHand: ->
 		prettifiedHand = {clubs:"", diamonds:"", hearts:"", spades:""}
-		console.log(@hands.north)
 		for suit in @deck.suitNames
 			for card in @hands.north[suit]
 				prettifiedHand[suit] += @deck.valueNames[card] + " "
 
 		prettifiedHand
-		
+
+	scoreMyHand: () ->
+		@scoreIt(@hands.north)
+	
+
 class Deck
 	constructor: ->
 		# whooole bunch of constants
@@ -29,6 +42,7 @@ class Deck
 		@suitSymbols = ["♠", "♥", "♦", "♣"] 
 		@suitNames = ["clubs", "diamonds", "hearts", "spades"]		
 		@valueNames = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+		@points = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3]
 
 		@unshuffled = []
 		for suit in @suits

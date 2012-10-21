@@ -1,24 +1,26 @@
 module "card dealing stuff"
 
-deck = new Deck()
-shuffledDeck = deck.shuffle()
-hands = deck.gimmeHands()
+julia = new Robot()
+julia.gimmeCards()
+# because typing is the worst
+hands = julia.hands
+deck = julia.deck
 
 sortMagic = ((a,b) => parseInt(a) - parseInt(b))
 
 test "deck is very likely created ok", ->
+	sampleDeck = new Deck()
 	# check some cards at random
-	equal deck.unshuffled[0].suit	, 0
-	equal deck.unshuffled[0].value  , 0
-	equal deck.unshuffled[14].suit  , 1
-	equal deck.unshuffled[14].value , 1
-	equal deck.unshuffled[28].suit  , 2
-	equal deck.unshuffled[28].value , 2
-	equal deck.unshuffled[50].suit  , 3
-	equal deck.unshuffled[50].value , 11
+	equal sampleDeck.unshuffled[0].suit	  , 0
+	equal sampleDeck.unshuffled[0].value  , 0
+	equal sampleDeck.unshuffled[14].suit  , 1
+	equal sampleDeck.unshuffled[14].value , 1
+	equal sampleDeck.unshuffled[28].suit  , 2
+	equal sampleDeck.unshuffled[28].value , 2
+	equal sampleDeck.unshuffled[50].suit  , 3
+	equal sampleDeck.unshuffled[50].value , 11
 
 test "my sort function actually works", ->
-	
 	deepEqual [1,2,3], [3,2,1].sort(sortMagic)
 	deepEqual [1,2,3,4,5,6], [1,2,3,4,5,6].sort(sortMagic)
 	deepEqual [], [].sort(sortMagic)
@@ -26,7 +28,9 @@ test "my sort function actually works", ->
 	deepEqual [1,11,12], [1,12,11].sort(sortMagic)
 
 test "shuffling doesn't lose cards", ->
-	equal shuffledDeck.length, deck.unshuffled.length
+	sampleDeck = new Deck()
+	shuffledDeck = sampleDeck.shuffle()
+	equal shuffledDeck.length, sampleDeck.unshuffled.length
 	deepEqual [0..51], shuffledDeck.sort(sortMagic)
 
 test "everyone has enough cards", ->
@@ -45,3 +49,34 @@ test "everyone's cards makes the whole deck", ->
 	for suit in deck.suitNames
 		equal 13, allTheCards[suit].length
 		deepEqual [0..12], allTheCards[suit].sort(sortMagic)
+
+test "we can score hands", ->
+	# even though they are illegal hands
+	hand1 = {clubs:[], diamonds:[], hearts:[], spades: [0]}
+	hand2 = {clubs:[], diamonds:[], hearts:[], spades: [10]}
+	hand3 = {clubs:[], diamonds:[], hearts:[], spades: [11]}
+	hand4 = {clubs:[], diamonds:[], hearts:[], spades: [12]}
+	hand5 = {clubs:[1], diamonds:[2], hearts:[3], spades: [4]}
+	hand6 = {clubs:[0], diamonds:[0], hearts:[0], spades: [0]}
+	hand7 = {clubs:[10], diamonds:[11], hearts:[12], spades: [0]}
+	hand8 = {clubs:[10,11,12], diamonds:[11,1,2], hearts:[12,3,4], spades: [0,11]}
+
+	equal julia.scoreIt(hand1), 4
+	equal julia.scoreIt(hand2), 1
+	equal julia.scoreIt(hand3), 2
+	equal julia.scoreIt(hand4), 3
+	equal julia.scoreIt(hand5), 0
+	equal julia.scoreIt(hand6), 16
+	equal julia.scoreIt(hand7), 10
+	equal julia.scoreIt(hand7), 10
+
+test "there's only 40 points in the deck", ->
+	allThePoints = 0;
+	for side in julia.deck.sides
+		allThePoints += julia.scoreIt(hands[side])
+
+	equal allThePoints, 40
+
+
+
+

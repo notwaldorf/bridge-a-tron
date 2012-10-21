@@ -52,12 +52,11 @@
 
   
   myHand = @julia.whatsMyHand()
-  console.log(myHand)
-  $('#clubs').text(myHand.clubs)
-  $('#diamonds').text(myHand.diamonds)
-  $('#hearts').text(myHand.hearts)
-  $('#spades').text(myHand.spades)
   
+  for suit in @julia.deck.suitNames
+  	$("##{suit}").text(myHand[suit]) # the extra hash is the coffee string interpolation
+  
+
 </script>
 
 </html>
