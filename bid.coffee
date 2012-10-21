@@ -27,6 +27,11 @@ class Thingamadoer
 		@newGame()
 
 	setUpClicks: ->
+		$('#q2').hide("slow")
+		$('#q3').hide("slow")
+		$('#q31').hide("slow")
+		$('#q4').hide("slow")
+
 		$("#deal").click =>
 			@newGame()
 			@showMeMyHand()
@@ -35,21 +40,9 @@ class Thingamadoer
 		$("#pointsWhy").click =>
 			$("#pointsDetails").text(@messages.scoring)
 		$("#openPass").click =>
-			answerBox = $('#openBidAnswer') 
-			$('#openBidWhy').show()
-			if (@whatShouldIOpenWith().text == "pass")
-				answerBox.text(@messages.yay)
-			else
-				answerBox.text(@messages.nay)	
+			@openBid(true)
 		$("#openBid").click =>
-			answerBox = $('#openBidAnswer') 
-			$('#openBidWhy').show()
-			youSaid = $('#openHowMuch').val() + $("#openOfWhat").val()
-			console.log "you said: " + youSaid
-			if (@whatShouldIOpenWith().text == youSaid)
-				answerBox.text(@messages.yay)
-			else
-				answerBox.text(@messages.nay)	
+			openBid(false)			
 		$("#openBidWhy").click =>
 			$("#openBidDetails").text(@messages.openingBid)	
 
@@ -84,6 +77,7 @@ class Thingamadoer
 			answerBox.text(@messages.nay)
 		else
 			answerBox.text(@messages.yay)
+			$('#q2').show("slow")
 
 	isHandBalanced: (hand) ->
 		# a balanced hand has no voids, and no singletons, and no 5s
@@ -139,6 +133,22 @@ class Thingamadoer
 			return @bids.baffled 
 		else
 			return @bids.baffled 
+
+	openBid: (iPassed) ->
+		answerBox = $('#openBidAnswer') 
+		$('#openBidWhy').show()
+		if iPassed
+			youSaid = "pass"
+		else
+			youSaid = $('#openHowMuch').val() + $("#openOfWhat").val()
+
+		console.log "you said: " + youSaid
+		if (@whatShouldIOpenWith().text == youSaid)
+			$('#q3').show("slow")
+			answerBox.text(@messages.yay)
+		else
+			answerBox.text(@messages.nay)	
+
 		
 class Deck
 	constructor: ->
