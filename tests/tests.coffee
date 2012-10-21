@@ -76,6 +76,20 @@ test "there's only 40 points in the deck", ->
 
 	equal allThePoints, 40
 
+test "balanced hands", ->
+	handB1 = {clubs:[1,2,3,4], diamonds:[1,2,3], hearts:[1,2,3], spades: [1,2,3]}
+	handB2 = {clubs:[1,2,3,4], diamonds:[1,2,3,4], hearts:[1,2,3], spades: [1,2]}
+	handB3 = {clubs:[1,2,3], diamonds:[1,2,3,4], hearts:[1,2], spades: [1,2,3,4]}
+	handNB1 = {clubs:[1], diamonds:[1], hearts:[1], spades: [1,2,3,4,5,6,7,8,9,10]}
+	handNB2 = {clubs:[1,2], diamonds:[1,2,3], hearts:[1,2,3], spades: [1,2,3,4,5]}
+	handNB3 = {clubs:[1,2,3], diamonds:[1,2], hearts:[1,2,3,4,5,6], spades: [1,2]}
+
+	equal julia.isHandBalanced(handB1), true
+	equal julia.isHandBalanced(handB2), true
+	equal julia.isHandBalanced(handB3), true
+	equal julia.isHandBalanced(handNB1), false
+	equal julia.isHandBalanced(handNB2), false
+	equal julia.isHandBalanced(handNB3), false
 
 
 

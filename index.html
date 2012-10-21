@@ -20,7 +20,7 @@
 	<div class="wrapper">
 		<h1> Playing bridge with Julia </h1>
 
-		<h2> Step 1. Here are your cards:</h2>
+		<h2> Step 1. Here are your cards: <button type="button" class="btn btn-link" id="deal">Gimme new ones</button></h2>
 		<p>
 			<span><span class="black">♣</span> <span id="clubs"   ></span></span> &nbsp;&nbsp;
 			<span><span class="red"  >♦</span> <span id="diamonds"></span></span> &nbsp;&nbsp;
@@ -42,10 +42,21 @@
 			
 		</p>
 		
-
-
 		<h2> Step 2. What are you bidding?</h2>
-
+		<p>
+			<span><input type="text" class="input-tiny" id=""><span class="black">♣</span></span> &nbsp;&nbsp;
+			<span><input type="text" class="input-tiny" id=""><span class="red"  >♦</span></span> &nbsp;&nbsp;
+			<span><input type="text" class="input-tiny" id=""><span class="red"  >♥</span></span> &nbsp;&nbsp;
+			<span><input type="text" class="input-tiny" id=""><span class="black">♠</span></span> &nbsp;&nbsp;
+			<span><input type="text" class="input-tiny" id=""><span class="black">NT</span></span> &nbsp;&nbsp;
+				<button type="button" class="btn btn-link" id="pass">Pass</button>
+				<button type="button" class="btn btn-link" id="bid">Bid!</button>
+			<p>
+			<span id="bidAnswer"></span>
+			<button type="button" class="btn btn-link hidden" id="bidWhy">Why?</button>
+			</p>
+			<span id="bidDetails"></span>
+		</p>
 		<h2> Step 3. Julia responds with:</h2>
 
 		<h2> Step 3.1. What do you think it means?</h2>
