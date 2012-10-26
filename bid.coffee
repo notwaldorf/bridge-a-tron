@@ -4,7 +4,7 @@ class Thingamadoer
 		@messages = new Messages()
 
 		@bids = {
-		baffled: {howMany: -1, suit: -1, text: "no idea"}, 
+		baffled: {howMany: -1, suit: -1, text: "halp, iz confused."}, 
 		pass: {howMany: 0, suit: -1, text: "pass"}, 
 		NT1: {howMany: 1, suit: -1, text: "1NT"}, 
 		NT2: {howMany: 2, suit: -1, text: "2NT"}, 
@@ -23,15 +23,13 @@ class Thingamadoer
 		S3: {howMany: 3, suit: 3, text: "3S"}
 		}
 
+		@myBids = [null, null]
+		@juliaBids = [null, null]
+
 		@setUpClicks()
 		@newGame()
 
 	setUpClicks: ->
-		$('#q2').hide("slow")
-		$('#q3').hide("slow")
-		$('#q31').hide("slow")
-		$('#q4').hide("slow")
-
 		$("#deal").click =>
 			@newGame()
 			@showMeMyHand()
@@ -40,26 +38,37 @@ class Thingamadoer
 		$("#pointsWhy").click =>
 			$("#pointsDetails").text(@messages.scoring)
 		$("#openPass").click =>
-			@openBid(true)
+			@checkMyOpeningBid(true)
 		$("#openBid").click =>
-			openBid(false)			
+			@checkMyOpeningBid(false)			
 		$("#openBidWhy").click =>
 			$("#openBidDetails").text(@messages.openingBid)	
 
 	newGame: ->
+		$('#q2').hide("slow")
+		$('#q3').hide("slow")
+		$('#q31').hide("slow")
+		$('#q4').hide("slow")
+		$('#q5').hide("slow")
+
 		@hands = @deck.gimmeHands()
 		@myHand = @hands.north
-		@myHandIsWorth = @scoreIt(@myHand)
 		console.log "---- NEW GAME ----"
-		console.log "my hand is worth: " + @myHandIsWorth
-		console.log "i should bid: " + @whatShouldIOpenWith().text
-
+		console.log "my hand is worth: " + @scoreIt(@myHand)
+		console.log "i should bid: " + @whatShouldIOpenWith().nextState
+		console.log "julia's hand is: "
+		console.log @hands.south
+		console.log "julia's hand is worth: " + @scoreIt(@hands.south)
+		#console.log "julia should respond with: " + @whatShouldJuliaRespondWith().text
+		
 	showMeMyHand: ->
 		for suit in @deck.suitNames
 			prettifiedHand = ""
 			for card in @myHand[suit]
 				prettifiedHand += @deck.valueNames[card] + " "
 			$("##{suit}").text(prettifiedHand)    
+
+
 
 	scoreIt: (hand) ->
 		# Ace = 4 pts.     King = 3 pts.     Queen = 2 pts.     Jack = 1 pt
@@ -73,7 +82,7 @@ class Thingamadoer
 		answerBox = $('#pointsAnswer') 
 		$('#pointsWhy').show()
 
-		if (parseInt($('#points').val()) != @myHandIsWorth)
+		if (parseInt($('#points').val()) != @scoreIt(@myHand))
 			answerBox.text(@messages.nay)
 		else
 			answerBox.text(@messages.yay)
@@ -96,60 +105,139 @@ class Thingamadoer
 
 		return true
 
-	whatShouldIOpenWith: () ->
-		myHandIsBalanced = @isHandBalanced(@myHand)
-		if @myHandIsWorth < 13
-			return @bids.pass
-		else if @myHandIsWorth >= 15 && @myHandIsWorth <= 17 && myHandIsBalanced
-			return @bids.NT1
-		else if @myHandIsWorth >= 20 && @myHandIsWorth <= 22 && myHandIsBalanced
-			return @bids.NT2
-		else if @myHandIsWorth >= 25 && @myHandIsWorth <= 27 && myHandIsBalanced
-			return @bids.NT3
-		else if @myHandIsWorth >= 22 && !myHandIsBalanced
-			return @bids.C2
-		else if @myHandIsWorth >= 13 && @myHandIsWorth <= 21
-			# pick longest major
-			if (@myHand.hearts.length >= 5 && @myHand.spades.length >= 5)
-				if (@myHand.hearts.length >= @myHand.spades.length) 
-					return @bids.H1 
-				else 
-					return @bids.S1
-			else if @myHand.hearts.length >= 5
-				return @bids.H1
-			else if @myHand.spades.length >= 5
-				return @bids.S1
-			# pick longest minor else keep bidding low
-			if (@myHand.clubs.length >= 3 && @myHand.diamonds.length >= 3)
-				if (@myHand.clubs.length >= @myHand.diamonds.length) 
-					return @bids.C1 
-				else 
-					return @bids.D1
-			else if @myHand.clubs.length >= 3
-				return @bids.C1
-			else if @myHand.diamonds.length >= 3
-				return @bids.D1
-		else if @myHandIsWorth >= 21 # strong 2x bid. Panic for now
-			return @bids.baffled 
-		else
-			return @bids.baffled 
-
-	openBid: (iPassed) ->
+	checkMyOpeningBid: (iPassed) ->
 		answerBox = $('#openBidAnswer') 
 		$('#openBidWhy').show()
 		if iPassed
-			youSaid = "pass"
+			youSaid = "bid_pass"
 		else
-			youSaid = $('#openHowMuch').val() + $("#openOfWhat").val()
+			youSaid = "bid_" + $('#openHowMuch').val() + $("#openOfWhat").val()
 
 		console.log "you said: " + youSaid
-		if (@whatShouldIOpenWith().text == youSaid)
+		if (@whatShouldIOpenWith().nextState == youSaid)
 			$('#q3').show("slow")
 			answerBox.text(@messages.yay)
+
+			juliaResponds = @whatShouldJuliaRespondWith().text
+			$('#juliaSays').text(juliaResponds)
+
+			if (juliaResponds == "pass")
+				$('#q5').show("slow")
 		else
 			answerBox.text(@messages.nay)	
 
+	whatShouldIOpenWith: () ->
+		myBid = @evaluateOpenBid(@myHand)
+		@myBids[0] = myBid
+		myBid
+
+	evaluateOpenBid: (hand) ->
+		handIsBalanced = @isHandBalanced(hand)
+		handIsWorth = @scoreIt(hand)
+
+		# based on what the score is, decide which of these states you fit
+		open_bid_pass = {low: 0, high: 12, nextState: "bid_pass"}
+		open_bid_1NT = {low: 15, high: 17, balanced: true, nextState: "bid_1NT"}
+		open_bid_2NT = {low: 20, high: 22, balanced: true, nextState: "bid_2NT"}
+		open_bid_3NT = {low: 25, high: 27, balanced: true, nextState: "bid_2NT"}
+		open_bid_1H = {low: 13, high: 21, suit: "hearts", cards: 4, 	 nextState: "bid_1H"}
+		open_bid_1S = {low: 13, high: 21, suit: "spades", cards: 5, 	 nextState: "bid_1S"}
+		open_bid_1D = {low: 13, high: 21, suit: "diamonds",  cards: 4, 	 nextState: "bid_1D"}
+		open_bid_1C = {low: 13, high: 21, suit: "clubs", 	cards: 3, 	 nextState: "bid_1C"}
+
+		# need to sort these by importance
+		openBid = [open_bid_2NT, open_bid_3NT, open_bid_1NT ,
+				open_bid_1S, open_bid_1H, open_bid_1D, open_bid_1C, open_bid_pass]
+		possibleStates = []
+
+		#debugger
+		for bid in openBid
+			if bid.low <= handIsWorth and bid.high >= handIsWorth
+				# check if we match the balanced condition
+				# otherwise check if we match the suit condition
+				# otherwise just add it
+				if bid.balanced is true
+					possibleStates.push bid unless !@isHandBalanced(hand)
+				else if bid.suit
+					switch bid.suit
+						when "hearts" then possibleStates.push bid unless hand.hearts.length < 5
+						when "spades" then possibleStates.push bid unless hand.spades.length < 5
+						when "diamonds" then possibleStates.push bid unless hand.diamonds.length < 4
+						when "clubs" then possibleStates.push bid unless hand.diamonds.length < 3
+				else 
+					possibleStates.push bid 
+
+		console.log("applicable bids: ")
+		console.log possibleStates	
+
+		return possibleStates[0]
 		
+	
+
+
+
+
+
+	whatShouldJuliaRespondWith: () ->
+		herHand = @hands.south
+		herHandIsWorth = @scoreIt(herHand)
+		handIsBalanced = @isHandBalanced(herHand)
+		
+		myBid = @myBids[0].text
+		#if i passed, let her do an open bid
+		if myBid == "pass"
+			return @evaluateOpenBid(herHand)
+		else if herHandIsWorth < 6
+			return @myBids.pass
+		else if myBid == "1C"
+			# can i try for a minor/ major suit?
+			if (herHand.diamonds.length > herHand.hearts.length and
+			herHand.diamonds.length > herHand.spades.length and
+			herHand.diamonds.length >= 4)
+				return @bids.D1
+			else if herHand.hearts.length >= 4
+				return @bids.D2
+			else if herHand.spades.length >= 4
+				return @bids.S2
+			# you can single raise a minor if you have 4+ match and 6-10 points and no major suit
+			else if herHand.clubs.length >= 3 
+				if herHandIsWorth <= 10 then return @bids.C2 else return @bids.C3
+			else
+				return @bids.baffled
+		else if myBid == "1D"
+			# can i try for a major suit?
+			if herHand.hearts.length >= 4
+				return @bids.D2
+			else if herHand.spades.length >= 4
+				return @bids.S2
+			# you can single raise a minor if you have 4+ match and 6-10 points and no major suit
+			else if herHand.diamonds.length >= 3 
+				if herHandIsWorth <= 10 then return @bids.D2 else return @bids.D3
+			else
+				return @bids.baffled
+		else if myBid == "1H"
+			# she can single raise a major with 3 matching cards and 6-10 pts to show fit
+			if herHand.hearts.length >= 3
+				if herHandIsWorth <= 10 then return @bids.S2 else return @bids.S3
+			else
+				return @bids.baffled
+		else if myBid == "1S"
+			# she can single raise a major with 3 matching cards and 6-10 pts to show fit
+			if herHand.hearts.length >= 3
+				if herHandIsWorth <= 10 then return @bids.S2 else return @bids.S3
+			# she can jump to a new minor/major with a 4+ 5+ suit
+			else
+				return @bids.baffled
+		return @bids.baffled
+		
+
+
+		
+
+
+
+
+
 class Deck
 	constructor: ->
 		# whooole bunch of constants
