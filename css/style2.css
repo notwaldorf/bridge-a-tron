@@ -1,0 +1,261 @@
+/* =================================================================
+ * main stuff
+ * =================================================================*/
+ 
+body {
+	background-color: #f1f2ec;
+	font-family: 'PT Sans', 'Verdana', sans-serif; 
+	font-size: 15px;
+}
+
+.wrapper
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 700px;
+}
+button { 
+	-webkit-transition: all .25s linear; 
+	transition: all .25s linear; 
+	-moz-transition: all .25s linear; 
+}
+
+/* =================================================================
+ * Title
+ * =================================================================*/
+.title
+{
+	padding-bottom: 10px;
+	color: black;
+	font-family: 'Yanone Kaffeesatz', 'PT Sans', sans-serif;
+	font-weight: 700;
+	font-size: 50px;
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	text-shadow: white 0px 1px 0px;
+	text-align: center;
+	margin-bottom: 50px;
+	margin-top: 20px;
+}
+
+.title-the {
+	text-transform: lowercase;
+	font-size: 25px;
+	position: relative;
+	top: -8px;
+	border-bottom: 2px solid black;
+	border-top: 2px solid black;
+}
+
+.title-line {
+	width: 100px;
+	border-bottom: 3px solid black;
+}
+
+/* =================================================================
+ * Dealt cards
+ * =================================================================*/
+.cards {
+	font-size: 25px;
+	color: black;
+	font-weight: 700;
+	text-shadow: white 0px 1px 0px;
+}
+h2
+{
+	margin-top: 0;
+	padding-top: 0;
+	margin-bottom: 0;
+	font-family: 'Yanone Kaffeesatz', 'PT Sans', sans-serif;
+	text-transform: uppercase;
+	font-size: 19px;	
+	letter-spacing: 2px;
+	font-weight: 400;
+	text-shadow: white 0px 1px 0px;
+}
+.deal {
+	color: #ef5150;
+}
+.deal:hover {
+	color: #40caec;
+	text-decoration: none;
+
+}
+
+/* =================================================================
+ * Bid steps
+ * =================================================================*/
+.blob{
+	overflow: hidden;
+	margin-bottom: 5px;
+}
+.question {
+	float: left;
+	width: 350px;
+}
+.halp {
+	width: 300px;
+	float: right;
+	padding-left: 48px;
+	border-left: 2px dashed #4c4c4c;
+}
+.halp h2 {
+	text-align: left;
+}
+
+/* =================================================================
+ * Step by step, oooh yeah
+ * =================================================================*/
+.steps {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	width: 700px;
+	height: 40px;
+	margin-top: 40px;
+	margin-bottom: 30px;
+}
+.step {
+	background-color: #4c4c4c;
+	color: #79797B;
+	padding: 10px;
+	font-family: 'PT Sans', sans-serif;
+	letter-spacing: 2px;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: 18px;
+	width: 200px;
+	float: left;
+	text-align: center;
+}
+.active {
+	background-color: #ef5150;
+	color: #f1f2ec;
+}
+.step-divider {
+	margin-top: 15px;
+	float: left;
+	font-size: 1px;
+	line-height: 1px;
+	padding: 5px;
+	background-color: #4c4c4c;
+	color: #ccc;
+}
+
+/* =================================================================
+ * Overrides
+ * =================================================================*/
+h2
+{
+	margin-top: 0;
+	padding-top: 0;
+	margin-bottom: 0;
+	font-family: 'Yanone Kaffeesatz', 'PT Sans', sans-serif;
+	text-transform: uppercase;
+	font-size: 19px;	
+	letter-spacing: 2px;
+	font-weight: 400;
+}
+.h2-the {
+	text-transform: lowercase;
+	font-size: 15px;
+	position: relative;
+	top: -2px;
+	font-style: italic;
+}
+
+
+
+
+
+
+
+h3, legend
+{
+	font-family: 'gill sans', 'PT Sans', arial, sans-serif;
+	line-height: 20px;
+	font-weight: normal;
+	text-transform: uppercase;
+	text-shadow: #EFEFEF 1px 1px 0px;
+	color: black;
+	border-bottom: none;
+	font-size: 14px;
+	font-style: normal;
+}
+h4
+{
+	margin-top: 10px;
+	padding-top: 0;
+	font-family: 'Yanone Kaffeesatz', 'PT Sans', sans-serif;
+	text-transform: uppercase;
+	font-size: 19px;	
+	letter-spacing: 2px;
+	font-weight: 400;
+	color: black;
+	clear:both;
+	border-bottom: 4px double #ded8d6;
+}
+
+p
+{
+	color: #555555;
+	font-family: 'PT Sans', 'Verdana', sans-serif; 
+	font-size: 15px;
+	line-height: 25px;
+	text-shadow: white 0px 1px 0px;
+}
+
+
+
+
+.red 
+{
+	color: red;
+}
+
+.black 
+{
+	color: black;
+}
+
+input[type="text"]
+{
+	height: 14px;
+	font-size: 12px;
+}
+select 
+{
+	height: 25px;
+	width: 50px;
+}
+.input-tiny
+{
+	width: 20px;
+}
+
+.form-inline
+{
+	margin: 0;
+	padding: 0;
+}
+.hidden {
+	display:none;
+}
+/* =================================================================
+ * floats
+ * =================================================================*/
+
+.float-right { 
+	float: right;
+	margin-left: 10px;	
+	margin-right: 10px;
+ }
+.float-left { 
+	float: left;
+	margin-left: 10px;	
+	margin-right: 10px;
+ }
+
+
+
+
