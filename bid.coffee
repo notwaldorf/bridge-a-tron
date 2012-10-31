@@ -139,7 +139,7 @@ class Thingamadoer
 		open_bid_pass = {low: 0, high: 12, nextState: "bid_pass"}
 		open_bid_1NT = {low: 15, high: 17, balanced: true, nextState: "bid_1NT"}
 		open_bid_2NT = {low: 20, high: 22, balanced: true, nextState: "bid_2NT"}
-		open_bid_3NT = {low: 25, high: 27, balanced: true, nextState: "bid_2NT"}
+		open_bid_3NT = {low: 25, high: 27, balanced: true, nextState: "bid_3NT"}
 		open_bid_1H = {low: 13, high: 21, suit: "hearts", cards: 4, 	 nextState: "bid_1H"}
 		open_bid_1S = {low: 13, high: 21, suit: "spades", cards: 5, 	 nextState: "bid_1S"}
 		open_bid_1D = {low: 13, high: 21, suit: "diamonds",  cards: 4, 	 nextState: "bid_1D"}
@@ -173,15 +173,11 @@ class Thingamadoer
 		return possibleStates[0]
 		
 	
-
-
-
-
-
 	whatShouldJuliaRespondWith: () ->
 		herHand = @hands.south
 		herHandIsWorth = @scoreIt(herHand)
 		handIsBalanced = @isHandBalanced(herHand)
+		
 		
 		myBid = @myBids[0].text
 		#if i passed, let her do an open bid
