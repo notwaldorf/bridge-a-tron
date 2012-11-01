@@ -3,26 +3,6 @@ class Thingamadoer
 		@deck = new Deck()
 		@messages = new Messages()
 
-		@bids = {
-		baffled: {howMany: -1, suit: -1, text: "halp, iz confused."}, 
-		pass: {howMany: 0, suit: -1, text: "pass"}, 
-		NT1: {howMany: 1, suit: -1, text: "1NT"}, 
-		NT2: {howMany: 2, suit: -1, text: "2NT"}, 
-		NT3: {howMany: 3, suit: -1, text: "3NT"},
-		C1: {howMany: 1, suit: 0, text: "1C"},  
-		C2: {howMany: 2, suit: 0, text: "2C"},  
-		C3: {howMany: 3, suit: 0, text: "3C"},
-		D1: {howMany: 1, suit: 1, text: "1D"}, 
-		D2: {howMany: 2, suit: 2, text: "2D"},    
-		D3: {howMany: 3, suit: 3, text: "3D"},
-		H1: {howMany: 1, suit: 1, text: "1H"},  
-		H2: {howMany: 2, suit: 2, text: "2H"},    
-		H3: {howMany: 3, suit: 3, text: "3H"},
-		S1: {howMany: 1, suit: 1, text: "1S"},  
-		S2: {howMany: 2, suit: 2, text: "2S"},    
-		S3: {howMany: 3, suit: 3, text: "3S"}
-		}
-
 		@myBids = [null, null]
 		@juliaBids = [null, null]
 
@@ -33,10 +13,17 @@ class Thingamadoer
 		$("#deal").click =>
 			@newGame()
 			@showMeMyHand()
+		
 		$("#pointsScore").click =>
 			@scoreMyHand()
+		$('#pointsHalp').click =>
+			$('#halpPoints').toggle("slow")
 		$("#pointsWhy").click =>
-			$("#pointsDetails").text(@messages.scoring)
+			$("#halpPoints").toggle("slow")
+
+		$('#openBidHalp').click =>
+			$('#halpMyBid').toggle("slow")
+
 		$("#openPass").click =>
 			@checkMyOpeningBid(true)
 		$("#openBid").click =>
@@ -45,11 +32,10 @@ class Thingamadoer
 			$("#openBidDetails").text(@messages.openingBid)	
 
 	newGame: ->
-		$('#q2').hide("slow")
-		$('#q3').hide("slow")
-		$('#q31').hide("slow")
-		$('#q4').hide("slow")
-		$('#q5').hide("slow")
+		$('#halpPoints').hide("fast")
+		$('#halpMyBid').hide("fast")
+		$('#yourBid').hide("fast")
+		$('#juliaBids').hide("fast")
 
 		@hands = @deck.gimmeHands()
 		@myHand = @hands.north
@@ -71,7 +57,6 @@ class Thingamadoer
 
 
 	scoreIt: (hand) ->
-		# Ace = 4 pts.     King = 3 pts.     Queen = 2 pts.     Jack = 1 pt
 		points = 0
 		for suit in @deck.suitNames
 			for card in hand[suit]
@@ -86,7 +71,7 @@ class Thingamadoer
 			answerBox.text(@messages.nay)
 		else
 			answerBox.text(@messages.yay)
-			$('#q2').show("slow")
+			$('#yourBid').show("slow")
 
 	isHandBalanced: (hand) ->
 		# a balanced hand has no voids, and no singletons, and no 5s
@@ -115,14 +100,21 @@ class Thingamadoer
 
 		console.log "you said: " + youSaid
 		if (@whatShouldIOpenWith().nextState == youSaid)
-			$('#q3').show("slow")
-			answerBox.text(@messages.yay)
+			$('#step1').removeClass('active')
+			$('#step2').addClass('active')
+			$('#yourPoints').hide("slow")
+			$('#halpPoints').hide("slow")
+			$('#yourBid').hide("slow")
+			$('#halpMyBid').hide("slow")
+			$('#juliaBids').show("slow")
+			
 
+			###
 			juliaResponds = @whatShouldJuliaRespondWith().text
 			$('#juliaSays').text(juliaResponds)
 
-			if (juliaResponds == "pass")
-				$('#q5').show("slow")
+			$('#q5').show("slow")
+			###
 		else
 			answerBox.text(@messages.nay)	
 
@@ -144,13 +136,13 @@ class Thingamadoer
 		open_bid_1S = {low: 13, high: 21, suit: "spades", cards: 5, 	 nextState: "bid_1S"}
 		open_bid_1D = {low: 13, high: 21, suit: "diamonds",  cards: 4, 	 nextState: "bid_1D"}
 		open_bid_1C = {low: 13, high: 21, suit: "clubs", 	cards: 3, 	 nextState: "bid_1C"}
+		open_bid_2C = {low: 22, high: 40, nextState: "bid_2C"}
 
 		# need to sort these by importance
 		openBid = [open_bid_2NT, open_bid_3NT, open_bid_1NT ,
 				open_bid_1S, open_bid_1H, open_bid_1D, open_bid_1C, open_bid_pass]
 		possibleStates = []
 
-		#debugger
 		for bid in openBid
 			if bid.low <= handIsWorth and bid.high >= handIsWorth
 				# check if we match the balanced condition
