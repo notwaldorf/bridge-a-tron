@@ -13,6 +13,9 @@
   	<script type="text/javascript" src="lib/coffee-script.js"></script>
   	
   	<script type="text/coffeescript" src="bid.coffee"></script>
+  	<script type="text/coffeescript" src="Deck.coffee"></script>
+  	<script type="text/coffeescript" src="Hooman.coffee"></script>
+  	<script type="text/coffeescript" src="Julia.coffee"></script>
   	
 </head>
 
@@ -41,33 +44,37 @@
 			<div class="step" id="step3">You respond</div>
 		</div>
 
+
+
 		<div class="blob">
-		<div id="yourPoints" class="question">
+		<div id="points" class="question">
 			<h2>How many points do <span class="h2-the">you think</span> you have?</h2>
 
 			<form class="form-inline">
-			  	<span>Total of </span><input type="text" class="input-tiny" id="points">
+			  	<span>Total of </span><input type="text" class="input-tiny" id="pointsInput">
 			  	<span>points.</span>
 			  	<button type="button" class="btn btn-link" id="pointsScore">Check it!</button>
-			  	<button type="button" class="btn btn-link" id="pointsHalp">Halp!</button>
+			  	<button type="button" class="btn btn-link" id="pointsHalpBtn">Halp!</button>
 			</form>
 
 			<p>
 			<span id="pointsAnswer"></span>
-			<button type="button" class="btn btn-link hidden" id="pointsWhy">Why?</button>
 			<span id="pointsDetails"></span>
 			</p>
 		</div>
 
-		<div class="halp" id="halpPoints">
+		<div class="halp" id="pointsHalpText">
 			<h2>Scoring: </h2>
 			Aces = <b>4</b> pts<br/>
 			Kings = <b>3</b> pts<br/>
 			Queens = <b>2</b> pts<br/>
 			Jacks = <b>1</b> pt<br/>
 			Everything else is useless.
+			<p>You should say <span id="pointsHint"></span></p>
 		</div>
 		</div>
+
+
 
 
 		<div class="blob">
@@ -76,8 +83,8 @@
 		
 			<p>
 			<span>
-				<input type="text" class="input-tiny" id="openHowMuch">
-				<select id="openOfWhat">
+				<input type="text" class="input-tiny" id="yourBidInputValue">
+				<select id="yourBidInputSuit">
 				  <option value="C">♣</option>
 				  <option value="D">♦</option>
 				  <option value="H">♥</option>
@@ -86,15 +93,16 @@
 				</select>
 			</span> 
 
-			<button type="button" class="btn btn-link" id="openPass">Pass</button>
-			<button type="button" class="btn btn-link" id="openBid">Bid!</button>
-			<button type="button" class="btn btn-link" id="openBidHalp">Halp!</button>
+			<button type="button" class="btn btn-link" id="yourBidActionPass">Pass</button>
+			<button type="button" class="btn btn-link" id="yourBidActionBid">Bid!</button>
+			<button type="button" class="btn btn-link" id="yourBidHalpBtn">Halp!</button>
 			</p>
 
-			<span id="openBidAnswer"></span>
-			<button type="button" class="btn btn-link hidden" id="openBidWhy">Why?</button><span id="openBidDetails"></span>
+			<span id="yourBidAnswer"></span>
+		
 		</div>
-		<div class="halp" id="halpMyBid">
+		
+		<div class="halp" id="yourBidHalpText">
 			<h2>If you have...: </h2>
 			<b>&nbsp;&nbsp;0 - 12</b> pts: Pass<br/>
 			<b>15 - 17</b> pts and a <b>balanced</b> hand: 1NT<br/>
@@ -105,6 +113,8 @@
 			<b>13 - 21</b> pts and a <b>4</b> diamonds: 1D<br/>
 			<b>13 - 21</b> pts and a <b>3</b> clubs: 1C<br/>
 			<b>37+</b> pts: You haven't counted correctly<br/>
+
+			<p>You should say <span id="yourBidHint"></span></p>
 		</div>
 		</div>
 
@@ -123,8 +133,8 @@
 </body>
 
 <script type="text/coffeescript">
-  	julia = new Thingamadoer
-  	julia.showMeMyHand()
+  	doer = new Thingamadoer
+  	doer.showCards()
 
 
 </script>

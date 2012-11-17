@@ -1,9 +1,9 @@
 module "card dealing stuff"
 
-julia = new Thingamadoer()
-# because typing is the worst
-hands = julia.hands
-deck = julia.deck
+doer = new Thingamadoer()
+# beause typing is the worst
+hands = doer.hands
+deck = doer.deck
 
 sortBasic = ((a,b) => parseInt(a) - parseInt(b))
 sortMagic = ((a,b) => 
@@ -65,19 +65,19 @@ test "we can score hands", ->
 	hand7 = {clubs:[10], diamonds:[11], hearts:[12], spades: [0]}
 	hand8 = {clubs:[10,11,12], diamonds:[11,1,2], hearts:[12,3,4], spades: [0,11]}
 
-	equal julia.scoreIt(hand1), 4
-	equal julia.scoreIt(hand2), 1
-	equal julia.scoreIt(hand3), 2
-	equal julia.scoreIt(hand4), 3
-	equal julia.scoreIt(hand5), 0
-	equal julia.scoreIt(hand6), 16
-	equal julia.scoreIt(hand7), 10
-	equal julia.scoreIt(hand8), 17
+	equal deck.scoreIt(hand1), 4
+	equal deck.scoreIt(hand2), 1
+	equal deck.scoreIt(hand3), 2
+	equal deck.scoreIt(hand4), 3
+	equal deck.scoreIt(hand5), 0
+	equal deck.scoreIt(hand6), 16
+	equal deck.scoreIt(hand7), 10
+	equal deck.scoreIt(hand8), 17
 
 test "there's only 40 points in the deck", ->
 	allThePoints = 0;
-	for side in julia.deck.sides
-		allThePoints += julia.scoreIt(hands[side])
+	for side in deck.sides
+		allThePoints += deck.scoreIt(hands[side])
 
 	equal allThePoints, 40
 
@@ -89,12 +89,12 @@ test "balanced hands", ->
 	handNB2 = {clubs:[1,2], diamonds:[1,2,3], hearts:[1,2,3], spades: [1,2,3,4,5]}
 	handNB3 = {clubs:[1,2,3], diamonds:[1,2], hearts:[1,2,3,4,5,6], spades: [1,2]}
 
-	equal julia.isHandBalanced(handB1), true
-	equal julia.isHandBalanced(handB2), true
-	equal julia.isHandBalanced(handB3), true
-	equal julia.isHandBalanced(handNB1), false
-	equal julia.isHandBalanced(handNB2), false
-	equal julia.isHandBalanced(handNB3), false
+	equal deck.isHandBalanced(handB1), true
+	equal deck.isHandBalanced(handB2), true
+	equal deck.isHandBalanced(handB3), true
+	equal deck.isHandBalanced(handNB1), false
+	equal deck.isHandBalanced(handNB2), false
+	equal deck.isHandBalanced(handNB3), false
 
 
 
