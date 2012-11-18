@@ -80,6 +80,7 @@ class Thingamadoer
 			$('#yourBid').hide("slow")
 			$('#yourBidHalpText').hide("slow")
 			$('#juliaBids').show("slow")
+			$('#juliaSays').text(@julia.getResponse(@hooman.getOpenBid()))
 		else
 			answerBox.show();
 			answerBox.text(@messages.nay)		

@@ -16,17 +16,18 @@ class Hooman
 		myBid.nextState
 
 	getResponse: (previousBid) ->
-		if previousBid == "bid_pass" then myBid = @evaluateOpenBid() else myBid = @evaluateResponse()
+		console.log("previous bid ", previousBid)
+		if previousBid == "bid_pass" then myBid = @evaluateOpenBid() else myBid = @evaluateResponse(previousBid)
 		@bids[0] = myBid
 		myBid.nextState
 
 	evaluateOpenBid: ->
 		# based on what the score is, decide which of these states you fit
-		open_bid_pass = {low: 0, high: 12, nextState: "bid_pass"}
+		open_bid_pass = {low: 0, high: 40, nextState: "bid_pass"}
 		open_bid_1NT = {low: 15, high: 17, balanced: true, nextState: "bid_1NT"}
 		open_bid_2NT = {low: 20, high: 22, balanced: true, nextState: "bid_2NT"}
 		open_bid_3NT = {low: 25, high: 27, balanced: true, nextState: "bid_3NT"}
-		open_bid_1H = {low: 13, high: 21, suit: "hearts", cards: 4, 	 nextState: "bid_1H"}
+		open_bid_1H = {low: 13, high: 21, suit: "hearts", cards: 5, 	 nextState: "bid_1H"}
 		open_bid_1S = {low: 13, high: 21, suit: "spades", cards: 5, 	 nextState: "bid_1S"}
 		open_bid_1D = {low: 13, high: 21, suit: "diamonds",  cards: 4, 	 nextState: "bid_1D"}
 		open_bid_1C = {low: 13, high: 21, suit: "clubs", 	cards: 3, 	 nextState: "bid_1C"}
@@ -46,21 +47,21 @@ class Hooman
 					possibleStates.push bid unless !@handIsBalanced
 				else if bid.suit
 					switch bid.suit
-						when "hearts" then possibleStates.push bid unless @hand.hearts.length < 5
-						when "spades" then possibleStates.push bid unless @hand.spades.length < 5
-						when "diamonds" then possibleStates.push bid unless @hand.diamonds.length < 4
-						when "clubs" then possibleStates.push bid unless @hand.diamonds.length < 3
+						when "hearts" then possibleStates.push bid unless @hand.hearts.length < bid.cards
+						when "spades" then possibleStates.push bid unless @hand.spades.length < bid.cards
+						when "diamonds" then possibleStates.push bid unless @hand.diamonds.length < bid.cards
+						when "clubs" then possibleStates.push bid unless @hand.clubs.length < bid.cards
 				else 
 					possibleStates.push bid 
 
-		#console.log("applicable bids: ")
-		#console.log possibleStates	
+		console.log("applicable bids: ", possibleStates)	
 
 		return possibleStates[0]	
 
 	evaluateResponse: (previousBid) ->
 		# based on what the score is, decide which of these states you fit
-		bid_pass = {low: 0, high: 5, nextState: "bid_pass"}
+		bid_pass = {low: 0, high: 40, nextState: "bid_pass", prevState:["bid_2NT", "bid_3NT", "bid_1NT",
+		"bid_1S", "bid_1H", "bid_1D", "bid_1C", "bid_pass"]}
 		
 		# 1 of a new suit
 		bid_1D = {low: 6, high: 20, suit: "diamonds", cards: 4, prevState:["bid_1C"], nextState: "bid_1D"}
@@ -88,7 +89,8 @@ class Hooman
 		bid_3D_r = {low: 10, high: 11, suit: "diamonds", cards: 4, prevState:["bid_1D"], nextState: "bid_3D"}
 
 		# no trump
-		bid_1NT = {low: 6, high: 9, balanced: true, prevState:["bid_1D"], nextState: "bid_1NT"}
+		bid_1NT = {low: 6, high: 9, balanced: true, prevState:["bid_1D", "bid_1H", "bid_1S"], nextState: "bid_1NT"}
+		bid_2NT = {low: 9, high: 10, balanced: true, prevState:["bid_1NT"], nextState: "bid_2NT"}
 
 		# need to sort these by importance
 		# confirm major fit, raise single, confirm minor fit
@@ -119,10 +121,10 @@ class Hooman
 					possibleStates.push bid unless !@handIsBalanced
 				else if bid.suit
 					switch bid.suit
-						when "hearts" then possibleStates.push bid unless @hand.hearts.length < 5
-						when "spades" then possibleStates.push bid unless @hand.spades.length < 5
-						when "diamonds" then possibleStates.push bid unless @hand.diamonds.length < 4
-						when "clubs" then possibleStates.push bid unless @hand.diamonds.length < 3
+						when "hearts" then possibleStates.push bid unless @hand.hearts.length < bid.cards
+						when "spades" then possibleStates.push bid unless @hand.spades.length < bid.cards
+						when "diamonds" then possibleStates.push bid unless @hand.diamonds.length < bid.cards
+						when "clubs" then possibleStates.push bid unless @hand.clubs.length < bid.cards
 				else 
 					possibleStates.push bid 
 
