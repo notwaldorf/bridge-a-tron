@@ -4,7 +4,7 @@ class Thingamadoer
 		@messages = new Messages()
 
 		@hooman = new Hooman()
-		@julia = new Julia()
+		@julia = new Hooman()
 
 		@setUpClicks()
 		@newGame()
@@ -39,6 +39,11 @@ class Thingamadoer
 		@hooman.setupHand(@deck, @hands.north)
 		@julia.setupHand(@deck, @hands.south)
 
+		console.log("your hand: ", @hooman.hand, "score: ", @hooman.handIsWorth)
+		console.log("hooman should bid: ", @hooman.getOpenBid())
+		console.log("julia hand: ", @julia.hand, "score: ", @julia.handIsWorth)
+
+		console.log("julia should bid: ", @julia.getResponse(@hooman.getOpenBid()))
 		$('#pointsHint').text(@hooman.handIsWorth)
 		$('#yourBidHint').text(@hooman.getOpenBid())
 
