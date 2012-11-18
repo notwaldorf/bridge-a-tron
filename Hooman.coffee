@@ -90,7 +90,7 @@ class Hooman
 
 		# no trump
 		bid_1NT = {low: 6, high: 9, balanced: true, prevState:["bid_1D", "bid_1H", "bid_1S"], nextState: "bid_1NT"}
-		bid_2NT = {low: 9, high: 10, balanced: true, prevState:["bid_1NT"], nextState: "bid_2NT"}
+		bid_2NT = {low: 9, high: 12, balanced: true, prevState:["bid_1NT"], nextState: "bid_2NT"}
 
 		# need to sort these by importance
 		# confirm major fit, raise single, confirm minor fit
@@ -98,7 +98,7 @@ class Hooman
 		bid_1H, bid_1S, bid_1D, bid_1NT, 
 		bid_2C_r, bid_2C_r, bid_2D_r, bid_3D_r,
 		bid_2C_n, bid_2D_n, bid_2H_n, bid_2S_n, 
-		bid_pass] 
+		bid_2NT, bid_pass] 
 		possibleStates = []
 
 		for bid in bids
